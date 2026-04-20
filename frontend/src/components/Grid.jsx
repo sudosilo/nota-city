@@ -1,10 +1,8 @@
 // NOTA CITY - src/components/Grid.jsx
-// Roads are visible as an underlay on all layers.
-
 const GRID_SIZE = 32
 
 const ZONE_COLORS = {
-  empty:       '#1a1a1a',
+  empty:       '#0a0a0a',
   residential: '#2a5a2a',
   commercial:  '#2a2a7a',
   industrial:  '#7a5a2a',
@@ -42,28 +40,28 @@ function getTileColor(tile, layer, isHighlighted) {
 
   if (layer === 'zones') {
     if (hasRoad) return roadColor
-    return ZONE_COLORS[tile.zone_type] || ZONE_COLORS.empty
+    return ZONE_COLORS[tile.zone_type] || '#0a0a0a'
   }
   if (layer === 'roads') {
-    return roadColor || TERRAIN_COLORS[tile.terrain] || '#1a1a1a'
+    return roadColor || '#0a0a0a'
   }
   if (layer === 'power') {
     if (tile.power_type && tile.power_type !== 'none') return POWER_COLORS[tile.power_type]
     if (hasRoad) return roadColor
     if (isHighlighted && tile.zone_type !== 'empty') return '#3a3a00'
-    return TERRAIN_COLORS[tile.terrain] || '#1a1a1a'
+    return '#0a0a0a'
   }
   if (layer === 'water') {
     if (tile.water_type && tile.water_type !== 'none') return WATER_COLORS[tile.water_type]
     if (hasRoad) return roadColor
     if (isHighlighted && tile.zone_type !== 'empty') return '#003a5a'
-    return TERRAIN_COLORS[tile.terrain] || '#1a1a1a'
+    return '#0a0a0a'
   }
 
   // Overview
   if (hasRoad) return roadColor
   if (tile.zone_type && tile.zone_type !== 'empty') return ZONE_COLORS[tile.zone_type]
-  return TERRAIN_COLORS[tile.terrain] || '#1a1a1a'
+  return TERRAIN_COLORS[tile.terrain] || '#0a0a0a'
 }
 
 export default function Grid({
