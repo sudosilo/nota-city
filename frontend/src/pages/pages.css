@@ -166,3 +166,37 @@
   font-size: 0.7rem;
   color: #4a6a4a;
 }
+
+/* Placement message - shown when a rule blocks placement */
+.placement-msg {
+  font-size: 0.8rem;
+  color: #4aff4a;
+  background: #111;
+  border: 1px solid #2a4a2a;
+  padding: 6px 14px;
+  width: fit-content;
+}
+
+.placement-msg.error {
+  color: #ff4a4a;
+  border-color: #4a2a2a;
+}
+
+/* Inline stat in page header */
+.stat-inline {
+  font-size: 0.8rem;
+  color: #4a6a4a;
+  margin-left: auto;
+}
+
+/* Bulldoze button style */
+.tool-btn.bulldoze {
+  border-color: #4a2a2a;
+  color: #aa4a4a;
+}
+
+.tool-btn.bulldoze.active {
+  background: #aa4a4a;
+  color: #0a0a0a;
+  border-color: #aa4a4a;
+}
