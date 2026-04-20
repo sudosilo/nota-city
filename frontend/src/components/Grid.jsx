@@ -1,15 +1,5 @@
 // NOTA CITY - src/components/Grid.jsx
-// Shared 32x32 tile grid renderer.
-// Supports click, drag-to-paint, and highlight overlays.
-//
-// Props:
-//   tiles        - array of 1024 tile objects
-//   onTileClick  - called on single click
-//   onMouseDown  - called on mousedown (start drag)
-//   onMouseEnter - called on mouseenter while dragging
-//   layer        - which layer to visualize
-//   readonly     - disables all interaction
-//   highlightSet - Set of "x,y" strings to show as powered/served
+// Roads are visible as an underlay on all layers.
 
 const GRID_SIZE = 32
 
@@ -47,32 +37,32 @@ const TERRAIN_COLORS = {
 function getTileColor(tile, layer, isHighlighted) {
   if (!tile) return '#0a0a0a'
 
-  if (isHighlighted && tile.zone_type !== 'empty') {
-    return '#1a4a1a'
-  }
+  const hasRoad = tile.road_type && tile.road_type !== 'none'
+  const roadColor = hasRoad ? (ROAD_COLORS[tile.road_type] || '#555555') : null
 
   if (layer === 'zones') {
+    if (hasRoad) return roadColor
     return ZONE_COLORS[tile.zone_type] || ZONE_COLORS.empty
   }
   if (layer === 'roads') {
-    return ROAD_COLORS[tile.road_type] || TERRAIN_COLORS[tile.terrain] || '#1a1a1a'
+    return roadColor || TERRAIN_COLORS[tile.terrain] || '#1a1a1a'
   }
   if (layer === 'power') {
+    if (tile.power_type && tile.power_type !== 'none') return POWER_COLORS[tile.power_type]
+    if (hasRoad) return roadColor
     if (isHighlighted && tile.zone_type !== 'empty') return '#3a3a00'
-    return POWER_COLORS[tile.power_type] || TERRAIN_COLORS[tile.terrain] || '#1a1a1a'
+    return TERRAIN_COLORS[tile.terrain] || '#1a1a1a'
   }
   if (layer === 'water') {
+    if (tile.water_type && tile.water_type !== 'none') return WATER_COLORS[tile.water_type]
+    if (hasRoad) return roadColor
     if (isHighlighted && tile.zone_type !== 'empty') return '#003a5a'
-    return WATER_COLORS[tile.water_type] || TERRAIN_COLORS[tile.terrain] || '#1a1a1a'
+    return TERRAIN_COLORS[tile.terrain] || '#1a1a1a'
   }
 
   // Overview
-  if (tile.road_type && tile.road_type !== 'none') {
-    return ROAD_COLORS[tile.road_type] || '#555'
-  }
-  if (tile.zone_type && tile.zone_type !== 'empty') {
-    return ZONE_COLORS[tile.zone_type] || '#1a1a1a'
-  }
+  if (hasRoad) return roadColor
+  if (tile.zone_type && tile.zone_type !== 'empty') return ZONE_COLORS[tile.zone_type]
   return TERRAIN_COLORS[tile.terrain] || '#1a1a1a'
 }
 
